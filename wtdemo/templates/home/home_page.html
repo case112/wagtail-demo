@@ -1,23 +1,18 @@
+{% extends 'base.html' %}
 
+{% load wagtailcore_tags wagtailimages_tags %}
 
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            
-        </title>
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+{% block content %}
 
+    {% image self.banner_image fill-900x400 as img %}
 
-        
-    </head>
+    <div class="jumbotron" style="background-image: url('{{ img.url }}'); background-size: cover;">
+        <h1 class="display-4">{{ self.banner_title }}</h1>
+        <p class="lead"></p>{{ self.banner_subtitle|richtext }}</p>
+        <hr class="my-4">
+        {% if self.banner_cta %}
+        <a class="btn btn-primary btn-lg" href="#" role="button">Button</a>
+        {% endif %}
+      </div>
+{% endblock %}
 
-    <body>
-
-
-        {{ self.banner_title }}
-
-    </body>
-</html>

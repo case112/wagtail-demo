@@ -21,7 +21,7 @@ class HomePage(Page):
     banner_cta = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name='+'
     )
