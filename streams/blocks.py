@@ -45,3 +45,17 @@ class RichTextBlock(blocks.RichTextBlock):
         template = 'streams/richtext_block.html'
         icon = 'edit'
         label = 'Full RichText'
+
+
+class CTABlock(blocks.StructBlock):
+
+    title = blocks.CharBlock(required=True, max_length=50)
+    text = blocks.RichTextBlock(required=True, features=['bold', 'italic'])
+    button_page = blocks.PageChooserBlock(required=False)
+    button_url = blocks.URLBlock(required=False)
+    button_text = blocks.CharBlock(requred=True, default='Learn More', max_length=40)
+
+    class Meta:
+        template = 'streams/cta_block.html'
+        icon = 'placeholder'
+        label = 'Call to Action'
