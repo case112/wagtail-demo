@@ -10,6 +10,8 @@ from streams import blocks
 class BlogListingPage(Page):
     """ Listing page lists all the Blog Detail Pages """
 
+    template = 'blog/blog_listing_page.html'
+
     custom_title = models.CharField(
         max_length=100,
         blank=False,
@@ -24,11 +26,11 @@ class BlogListingPage(Page):
     def get_context(self, request, *args, **kwargs):
         """ Adding custom stuff to our context """
         context = super().get_context(request, *args, **kwargs)
-        #context['extra'] = 'Read all about it' 
+        context['posts'] = BlogDetailPage.objects.live().public() 
         return context
 
 
-class BlogDetailPage():
+class BlogDetailPage(Page):
     """ Blog Detail page """
 
     custom_title = models.CharField(
