@@ -1,0 +1,9 @@
+{
+    "http.proxyAuthorization": null
+}
+
+"emmet.includeLanguages": {
+
+    "django-html": "html",
+
+  },
