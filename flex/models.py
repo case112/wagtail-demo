@@ -20,6 +20,7 @@ class FlexPage(Page):
             ('full_richtext', blocks.RichTextBlock()),
             ('cards', blocks.CardBlock()),
             ('cta', blocks.CTABlock()),
+            ('button', blocks.ButtonBlock())
         ],
         null=True,
         blank=True
