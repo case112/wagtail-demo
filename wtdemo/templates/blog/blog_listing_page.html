@@ -4,7 +4,18 @@
 
 {% block content %}
 
-    <a href="{% routablepageurl page "latest_blog_posts" %}">Latest posts</a>
+    <a href="{% routablepageurl page "latest_posts" %}">View Latest Posts Only</a>
+
+    <h2>
+        Categories:
+        <small>
+            {% for cat in categories %}
+                <a href="?category={{ cat.slug }}">
+                    {{ cat.name }}
+                </a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </small>
+    </h2>
 
     <div class="container">
         {% for post in posts %}
