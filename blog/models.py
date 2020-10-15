@@ -235,7 +235,7 @@ class ArticleBlogPage(BlogDetailPage):
 
 
 class VideoBlogPage(BlogDetailPage):
-    """ A video """
+    """ A video subclassed page """
 
     youtube_video_id = models.CharField(max_length=50)
 
