@@ -30,19 +30,8 @@ def register_code_styling(features):
     # Step 4
     db_conversion = {
         "from_database_format": {tag: InlineStyleElementHandler(type_)},
-        "to_database_format": {
-            "style_map": {
-                type_: {
-                    "element": tag,
-                    "props": {
-                        "class": "code-block"
-                    }
-                }
-            }
-        }
+        "to_database_format": {"style_map": {type_: {"element": tag}}}
     }
-
-
 
     # Step 5
     features.register_converter_rule("contentstate", feature_name, db_conversion)
