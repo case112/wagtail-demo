@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 from django.shortcuts import render
 from django import forms
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -208,6 +210,11 @@ class BlogDetailPage(Page):
             heading='Categories'
         ), 
     ]
+
+    def save(self, *args, **kwargs):
+        key = make_template_fragment_key('blog_post_preview', [self.id])
+        cache.delete(key)
+        return super().save(*args, **kwargs)
 
 
 class ArticleBlogPage(BlogDetailPage):

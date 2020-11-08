@@ -1,5 +1,7 @@
 """Menus models."""
 from django.db import models
+from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 
 from django_extensions.db.fields import AutoSlugField
 from modelcluster.fields import ParentalKey
@@ -42,6 +44,11 @@ class MenuItem(Orderable):
         PageChooserPanel("link_page"),
         FieldPanel("open_in_new_tab"),
     ]
+
+    def save(self, *args, **kwargs):
+        key = make_template_fragment_key('navigation')
+        cache.delete(key)
+        return super().save(*args, **kwargs)
 
     @property
     def link(self):
