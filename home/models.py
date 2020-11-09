@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from modelcluster.fields import ParentalKey
 
+from wagtail.api import APIField
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
@@ -60,6 +61,13 @@ class HomePage(RoutablePageMixin, Page):
         null=True,
         blank=True
     )
+
+    api_fields = [
+        APIField('banner_title'),
+        APIField('banner_subtitle'),
+        APIField('banner_image'),
+        APIField('banner_cta'),
+    ]
 
     max_count = 1
 
