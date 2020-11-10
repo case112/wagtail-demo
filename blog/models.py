@@ -24,6 +24,18 @@ from wagtail.snippets.models import register_snippet
 
 from streams import blocks 
 
+from rest_framework.fields import Field
+
+class ImageSerializedField(Field):
+    def to_representation(self, value):
+        return {
+            'url': value.file.url,
+            'title': value.title,
+            'width': value.width,
+            'height': value.height,
+        }
+
+
 
 class BlogAuthorOrderable(Orderable):
     """ This allows us to select one or more authors to a post """
@@ -46,10 +58,14 @@ class BlogAuthorOrderable(Orderable):
     def author_website(self):
         return self.author.website
     
+    @property
+    def author_image(self):
+        return self.author.image
 
     api_fields = [
         APIField('author_name'),
         APIField('author_website'),
+        APIField('author_image', serializer=ImageSerializedField()),
         ]
 
 
