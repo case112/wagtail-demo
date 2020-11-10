@@ -33,6 +33,10 @@ class HomePageCarouselImages(Orderable):
         ImageChooserPanel('carousel_image')
     ]
 
+    api_fields = [
+        APIField('carousel_image'),
+    ]
+
 
 class HomePage(RoutablePageMixin, Page):
     templates = 'home/home_page.html'
@@ -67,6 +71,8 @@ class HomePage(RoutablePageMixin, Page):
         APIField('banner_subtitle'),
         APIField('banner_image'),
         APIField('banner_cta'),
+        APIField('carousel_images'),
+        APIField('content'),
     ]
 
     max_count = 1
