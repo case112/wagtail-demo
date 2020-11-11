@@ -19,6 +19,7 @@ from wagtail.core.fields import StreamField
 
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.api.fields import ImageRenditionField 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.snippets.models import register_snippet
 
@@ -27,6 +28,7 @@ from streams import blocks
 from rest_framework.fields import Field
 
 class ImageSerializedField(Field):
+    """ A Custom serializer used in Wagtails v2 API """
     def to_representation(self, value):
         return {
             'url': value.file.url,
@@ -65,7 +67,14 @@ class BlogAuthorOrderable(Orderable):
     api_fields = [
         APIField('author_name'),
         APIField('author_website'),
-        APIField('author_image', serializer=ImageSerializedField()),
+        #APIField('author_image', serializer=ImageSerializedField()),
+        APIField(
+            'image',
+            serializer=ImageRenditionField(
+                'fill-200x250',
+                 source='author_image'
+            )
+        ),
         ]
 
 
