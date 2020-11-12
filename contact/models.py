@@ -27,6 +27,8 @@ class ContactPage(WagtailCaptchaEmailForm):
     # This is the default path.
     # If ignored, Wagtail adds _landing.html to your template name
     landing_page_template = "contact/contact_page_landing.html"
+    subpage_types = []
+    parent_page_types = ['home.HomePage']
 
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
