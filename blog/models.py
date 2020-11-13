@@ -4,6 +4,8 @@ from django.core.cache.utils import make_template_fragment_key
 from django.shortcuts import render
 from django import forms
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
 
 from wagtail.api import APIField 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -208,6 +210,14 @@ class BlogListingPage(RoutablePageMixin, Page):
         )
         return sitemap
 
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogDetailPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE,
+    )
+
+
 class BlogDetailPage(Page):
     """ Parental blog Detail page """
 
@@ -215,6 +225,7 @@ class BlogDetailPage(Page):
     parent_page_types = [
         'blog.BlogListingPage'
     ]
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
     custom_title = models.CharField(
         max_length=100,
@@ -246,6 +257,7 @@ class BlogDetailPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('custom_title'),
+        FieldPanel("tags"),
         ImageChooserPanel('banner_image'),
         StreamFieldPanel('content'),
         MultiFieldPanel(
@@ -292,6 +304,7 @@ class ArticleBlogPage(BlogDetailPage):
     content_panels = Page.content_panels + [
         FieldPanel('custom_title'),
         FieldPanel('subtitle'),
+        FieldPanel("tags"),
         ImageChooserPanel('banner_image'),
         ImageChooserPanel('intro_image'),
         StreamFieldPanel('content'),
@@ -317,6 +330,7 @@ class VideoBlogPage(BlogDetailPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('custom_title'),
+        FieldPanel("tags"),
         ImageChooserPanel('banner_image'),
         MultiFieldPanel(
             [
