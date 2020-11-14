@@ -6,9 +6,17 @@ from modelcluster.fields import ParentalKey
 from wagtail.api import APIField
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import (
+    FieldPanel, 
+    InlinePanel, 
+    MultiFieldPanel, 
+    StreamFieldPanel, 
+    ObjectList, 
+    TabbedInterface,
+    FieldPanel, 
+    PageChooserPanel 
+)
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from streams import blocks 
@@ -88,22 +96,36 @@ class HomePage(RoutablePageMixin, Page):
     max_count = 1
 
     content_panels = Page.content_panels + [
-        MultiFieldPanel([
-            FieldPanel('banner_title'),
-            FieldPanel('banner_subtitle'),
-            ImageChooserPanel('banner_image'),
-            PageChooserPanel('banner_cta'),
-        ], heading='Banner Options'),
-        MultiFieldPanel([
-            #FieldPanel('label'),
-            #FieldPanel('sublabel'),
-            InlinePanel('carousel_images', max_num=5, min_num=1, label='Image'),
-        ], heading='Caorusel Images'),
-        StreamFieldPanel('content'),
-
+        MultiFieldPanel(
+            [InlinePanel("carousel_images", max_num=5, min_num=1, label="Image")],
+            heading="Carousel Images",
+        ),
+        StreamFieldPanel("content"),
     ]
+
+    banner_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("banner_title"),
+                FieldPanel("banner_subtitle"),
+                ImageChooserPanel("banner_image"),
+                PageChooserPanel("banner_cta"),
+            ],
+            heading="Banner Options",
+        ),
+    ]
+
+    edit_handler = TabbedInterface(
+    [
+        ObjectList(content_panels, heading='Content'),
+        ObjectList(banner_panels, heading="Banner Settings"),
+        ObjectList(Page.promote_panels, heading='Promotional Stuff'),
+        ObjectList(Page.settings_panels, heading='Settings Stuff'),
+    ]
+    )
 
     @route(r'^subscribe/$')
     def the_subscribe_page(self, request, *args, **kwargs):
         context = self.get_context(request, *args, **kwargs)
         return render(request, 'home/subscribe.html', context)
+
